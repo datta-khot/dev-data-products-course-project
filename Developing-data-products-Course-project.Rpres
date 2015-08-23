@@ -1,0 +1,57 @@
+Developing Data Products Course Project Presentation
+========================================================
+author: Datta Khot
+date: Aug 23, 2015
+
+Course Project Overview
+========================================================
+
+In this course project, we use default dataset 'ChickWeight' to build a shiny application. 
+The application builds different model using caret package and user selected regresion
+algorithms. 
+
+User can choose one of the following algorithms to build model and see model information.
+
+- lm (Linear Model)
+- glm (Generalized Linear Model)
+
+
+Sample ChickWeight dataset records
+========================================================
+
+```{r}
+library(datasets)
+data("ChickWeight")
+head(ChickWeight)
+```
+
+
+Chickweight dataset plot and summary
+========================================================
+
+Plot showing chick weight against time
+```{r, echo=FALSE}
+library(ggplot2)
+plot(ChickWeight$Time, ChickWeight$weight)
+```
+
+***
+ChickWeight dataset summary
+```{r, echo=FALSE}
+summary(ChickWeight)
+```
+
+
+Model building and Prediction using linear modelling algorithm
+========================================================
+
+```{r}
+library(caret)
+inTrain <- createDataPartition(y=ChickWeight$weight, p=0.7, list=FALSE)
+training <- ChickWeight[inTrain,]
+testing <- ChickWeight[-inTrain,]
+set.seed(1234)
+modelFit <- train(weight ~ Time, data=training, method="glm")
+predictions <- predict(modelFit, newdata=testing)
+head(predictions)
+```
